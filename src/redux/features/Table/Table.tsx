@@ -1,56 +1,62 @@
-import React from 'react';
-import "./Table.css"
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SingleUser } from "../../../utils/api/interfaces/index.dto";
+import { fetchUser } from "../../api";
+import "./Table.css";
+import { UserDetails } from "./TableSlice";
 
 const Table = () => {
+  const [selectedNumber, setSelectedNumber] = useState<string>("");
 
-    
+  const dispatch = useDispatch();
+  const { currentUser, isFetching, error } = useSelector(UserDetails);
+
+  useEffect(() => {
+    fetchUser(dispatch);
+  }, []);
+
   return (
     <div className="App">
       <table>
-        <caption>Statement Summary</caption>
+        <caption>Random Users Summary</caption>
+        <caption>
+          <label htmlFor="cars">Select number of rows to display:</label>
+          <select
+            name="cars"
+            id="cars"
+            value={selectedNumber}
+            onChange={(e) => {
+              setSelectedNumber(e.target.value);
+              fetchUser(dispatch, parseInt(selectedNumber));
+            }}
+          >
+            <optgroup label="rows">
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </optgroup>
+          </select>
+        </caption>
         <thead>
           <tr>
-            <th scope="col">Account</th>
-            <th scope="col">Due Date</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Period</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Country</th>
+            <th scope="col">Email Address</th>
+            <th scope="col">Phone Number</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td data-label="Account">Visa - 3412</td>
-            <td data-label="Due Date">04/01/2016</td>
-            <td data-label="Amount">$1,190</td>
-            <td data-label="Period">03/01/2016 - 03/31/2016</td>
-          </tr>
-          <tr>
-            <td scope="row" data-label="Account">
-              Visa - 6076
-            </td>
-            <td data-label="Due Date">03/01/2016</td>
-            <td data-label="Amount">$2,443</td>
-            <td data-label="Period">02/01/2016 - 02/29/2016</td>
-          </tr>
-          <tr>
-            <td scope="row" data-label="Account">
-              Corporate AMEX
-            </td>
-            <td data-label="Due Date">03/01/2016</td>
-            <td data-label="Amount">$1,181</td>
-            <td data-label="Period">02/01/2016 - 02/29/2016</td>
-          </tr>
-          <tr>
-            <td scope="row" data-label="Acount">
-              Visa - 3412
-            </td>
-            <td data-label="Due Date">02/01/2016</td>
-            <td data-label="Amount">$842</td>
-            <td data-label="Period">01/01/2016 - 01/31/2016</td>
-          </tr>
+          {currentUser?.map((user: SingleUser) => (
+            <tr key={user.login.uuid}>
+              <td data-label="Full Name">{`${user.name.first} ${user.name.last}`}</td>
+              <td data-label="Country">{user.location.country}</td>
+              <td data-label="Email Address">{user.email}</td>
+              <td data-label="Phone Number">{user.phone}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
-}
+};
 
 export default Table;

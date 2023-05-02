@@ -1,43 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { createSlice } from "@reduxjs/toolkit";
+import { IUser } from "../../../utils/api/interfaces/index.dto";
 
 
-// const initialState:User[] = [];
-export interface EmployeeState {
-  data: User[];
-  singleEmployee: DisplayedUser;
-}
 
 const TableSlice = createSlice({
-  name: "employeeTable",
+  name: "user",
   initialState: {
-    data: [],
-    singleEmployee: userDetails,
-  } as EmployeeState,
+    currentUser: [],
+    isFetching: false,
+    error: false,
+  } as IUser,
   reducers: {
-    addEmployee: (state: EmployeeState, action: PayloadAction<any>) => {
-      state.data.push(action.payload);
+    fetchSuccess: (state, action) => {
+      state.isFetching = false;
+      state.currentUser = action.payload;
+    },
+    fetchFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
     },
   },
 });
 
-export const getEmployeesAsync = () => async (dispatch: any) => {
-  try {
-    const response = await axios.get(`${ServerUrl}/users`);
-    dispatch(getAllEmployees(response.data));
-  } catch (err: any) {
-    console.log(err);
-    toast.error(err.response.data.message || "Something went wrong");
-    throw new Error(err);
-  }
-};
 
 
-export const { getAllEmployees, addEmployee, getAnEmployee } =
-  TableSlice.actions;
+export const { fetchSuccess, fetchFailure } = TableSlice.actions;
 
-export const showEmployee = (state: { employeeTable: EmployeeState }) =>
-  state.employeeTable.data;
+export const UserDetails = (state: { user: IUser }) => state.user;
 
 export default TableSlice.reducer;
