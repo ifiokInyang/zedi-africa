@@ -22,7 +22,7 @@ const Table = () => {
       return toast.error("Select a valid row to see next page");
     }
     setIsPageLoad(false);
-    fetchAllUsers(dispatch, parseInt(selectedNumber));
+    fetchAllUsers(dispatch, "yu", parseInt(selectedNumber));
     setTrackedUser((previous: null | any[]) => {
       return (previous = [...(trackedUser as any), currentUser]);
     });
@@ -57,18 +57,19 @@ const Table = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="tableContainer">
       <table>
-        <caption>Random Users Summary</caption>
+        <caption>Random Users Table</caption>
         <caption>
-          <label htmlFor="cars">Select number of rows to display:</label>
+          <label htmlFor="users">Select number of rows to display: </label>
           <select
-            name="cars"
-            id="cars"
+            className="selectGroup"
+            name="users"
+            id="users"
             value={selectedNumber}
             onChange={(e) => {
               setSelectedNumber(e.target.value);
-              fetchAllUsers(dispatch, parseInt(e.target.value));
+              fetchAllUsers(dispatch, "abc", parseInt(e.target.value));
             }}
           >
             <optgroup label="rows">
