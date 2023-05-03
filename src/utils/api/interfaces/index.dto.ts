@@ -22,4 +22,12 @@ export interface SingleUser {
   };
   email: string;
   phone: string;
+  nat: string;
+  picture: {
+    large: string;
+    medium: string;
+    thumbnail: string;
+  };
+  dob: { date: Date; age: number };
+  
 }

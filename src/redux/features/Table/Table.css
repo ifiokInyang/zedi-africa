@@ -7,6 +7,20 @@ table {
   table-layout: fixed;
 }
 
+.buttonContainer{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5em;
+}
+.navButton{
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+.nameField{
+  
+}
 table caption {
   font-size: 1.5em;
   margin: .5em 0 .75em;
