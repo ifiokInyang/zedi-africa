@@ -14,9 +14,12 @@ To install dependencies
 
 If you are using npm
 
+### `Create a .env file in the root directory and copy the .env.sample file to it.`
+
+### `Copy and paste this url as the value for the API url in your .env: https://randomuser.me/api`
 ### `yarn start`
 
-Runs the app in the development mode.\
+Run the app in the development mode with this command.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
