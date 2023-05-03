@@ -7,6 +7,23 @@ justify-content: center;
 background-color: #f8f8f8;
 }
 
-.userDetailsContainer{
+.userDetails{
+    font-size: 42px;
+    
+}
 
+.userImage{
+    margin-left: 92px;
+}
+
+
+@media screen and (max-width: 600px) {
+    .userImage{
+    margin-left: 12px;
+}
+
+.userDetails{
+    font-size: 22px;
+    
+}
 }

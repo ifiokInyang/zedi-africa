@@ -8,31 +8,39 @@ import { UserDetails } from "./TableSlice";
 import { useNavigate } from "react-router-dom";
 
 const Table = () => {
-  const { currentUser, isFetching, error } = useSelector(UserDetails);
-
+  const { currentUser, isFetching, error, total } = useSelector(UserDetails);
+  
+  const [currPage, setCurrPage] = useState<number>(1);
   const [selectedNumber, setSelectedNumber] = useState<string>("");
   const [isPageLoad, setIsPageLoad] = useState<boolean>(false);
-  const [trackedUser, setTrackedUser] = useState<null | any[]>(currentUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //function to handle Next click
   const handleNext = () => {
     if (selectedNumber === "") {
       return toast.error("Select a valid row to see next page");
+    } else if (total < 50) {
+      setIsPageLoad(false);
+      setCurrPage((prev: number) => prev + 1);
+      fetchAllUsers(dispatch, "", parseInt(selectedNumber), currPage + 1);
+    } else {
+      toast.error("You've reached the end of the list");
     }
-    setIsPageLoad(false);
-    fetchAllUsers(dispatch, "yu", parseInt(selectedNumber));
-    setTrackedUser((previous: null | any[]) => {
-      return (previous = [...(trackedUser as any), currentUser]);
-    });
   };
 
   const handlePrev = () => {
-    console.log("tracked user is ", trackedUser);
+    if (selectedNumber === "") {
+      return toast.error("Select a valid row to see next page");
+    }
 
-    console.log("tracked user pop is ", trackedUser?.pop());
-    console.log("i am active");
+    setCurrPage((prev: number) => (prev > 1 ? prev - 1 : 1));
+    if (currPage === 1) {
+      setIsPageLoad(true);
+    }
+
+    fetchAllUsers(dispatch, "", parseInt(selectedNumber), currPage - 1);
   };
 
   const handleUserClick = (user: SingleUser) => {
@@ -59,7 +67,7 @@ const Table = () => {
   return (
     <div className="tableContainer">
       <table>
-        <caption>Random Users Table</caption>
+        <caption className="tableTitle">Random Users Table</caption>
         <caption>
           <label htmlFor="users">Select number of rows to display: </label>
           <select
@@ -69,7 +77,7 @@ const Table = () => {
             value={selectedNumber}
             onChange={(e) => {
               setSelectedNumber(e.target.value);
-              fetchAllUsers(dispatch, "abc", parseInt(e.target.value));
+              fetchAllUsers(dispatch, "", parseInt(e.target.value));
             }}
           >
             <optgroup label="rows">
@@ -114,9 +122,19 @@ const Table = () => {
         >
           Previous
         </button>
-        <button type="button" className="navButton" onClick={handleNext}>
+        <button
+          type="button"
+          className="navButton"
+          onClick={handleNext}
+          disabled={isFetching}
+        >
           Next
         </button>
+      </div>
+      <div>
+        <p className="pageNum">
+          Page: {currPage}
+        </p>
       </div>
     </div>
   );

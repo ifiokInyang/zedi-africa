@@ -15,6 +15,10 @@ table {
   margin-top: 5em;
 }
 
+.tableTitle{
+  font-size: 44px;
+  font-weight: bold;
+}
 .selectGroup{
   border-radius: 30px;
   padding: 8px;
@@ -29,10 +33,12 @@ table {
   border-radius: 15px;
 }
 
+.pageNum{
+  text-align: center;
+   margin-top: 50px
+}
 .nameField{
   cursor: pointer;
-/* background-color: red; */
-/* border-left: 3px solid blue; */
 }
 .nameField:hover{
 background-color: rgb(122, 115, 115);

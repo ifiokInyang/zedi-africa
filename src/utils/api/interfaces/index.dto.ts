@@ -2,6 +2,7 @@ export interface IUser {
   currentUser: null | [];
   isFetching: boolean;
   error: boolean;
+  total: number;
 }
 
 export interface SingleUser {
